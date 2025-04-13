@@ -1,14 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class GameRestarter : MonoBehaviour
 {
     [SerializeField] private Button _startButton;
     [SerializeField] private Player _player;
     [SerializeField] private EnemySpawner _enemySpawner;
     [SerializeField] private BulletSpawner _bulletSpawner;
-    [SerializeField] private GameObject _restartPanel;
-    [SerializeField] private Button _restartButton;
+    [SerializeField] private DummyUI _restartPanel;
+
+    private void Awake()
+    {
+        GameOver();
+    }
 
     private void OnEnable()
     {
@@ -27,7 +31,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         _enemySpawner.StartSpawn();
         _player.Reset();
-        _restartPanel.SetActive(false);
+        _restartPanel.gameObject.SetActive(false);
     }
 
     private void GameOver()
@@ -35,6 +39,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         _enemySpawner.StopSpawn();
         _bulletSpawner.RemoveBullets();
-        _restartPanel.SetActive(true);
+        _restartPanel.gameObject.SetActive(true);
     }
 }

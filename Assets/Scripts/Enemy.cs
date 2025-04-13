@@ -30,6 +30,26 @@ public class Enemy : BaseEntity, IObstacle
         _health.Died -= OnDied;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.TryGetComponent<Despawner>(out _))
+        {
+            if (_shootCoroutine != null)
+            {
+                StopCoroutine(_shootCoroutine);
+                _shootCoroutine = null;
+            }
+
+            Despawn();
+        }
+    }
+
+    public void Construct(BulletSpawner bulletSpawner)
+    {
+        _bulletSpawner = bulletSpawner;
+        _shootCoroutine = StartCoroutine(ShootCoroutine());
+    }
+
     private IEnumerator ShootCoroutine()
     {
         while (enabled)
@@ -45,26 +65,6 @@ public class Enemy : BaseEntity, IObstacle
         Bullet bullet = _bulletSpawner.GetBullet(bulletSpawnPosition);
         bullet.Initialize(this.gameObject);
         bullet.LaunchingAnEntity(Vector2.left);
-    }
-
-    public void Construct(BulletSpawner bulletSpawner)
-    {
-        _bulletSpawner = bulletSpawner;
-        _shootCoroutine = StartCoroutine(ShootCoroutine());
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.TryGetComponent<Despawner>(out _))
-        {
-            if (_shootCoroutine != null) 
-            {
-                StopCoroutine(_shootCoroutine); 
-                _shootCoroutine = null; 
-            }
-
-            Despawn();
-        }
     }
 
     private void OnDied()

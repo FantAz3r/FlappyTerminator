@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     private ScoreCounter _scoreCounter;
     private PlayerCollisionHandler _handler;
     private InputService _inputService;
-    private PlayerAttack _playerAttack;
+    private PlayerAttacker _playerAttack;
     private Health _health;
 
     public event Action Crushed;
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
         _handler = GetComponent<PlayerCollisionHandler>();
         _playerMover = GetComponent<PlayerMover>();
         _inputService = GetComponent<InputService>();
-        _playerAttack = GetComponent<PlayerAttack>();
+        _playerAttack = GetComponent<PlayerAttacker>();
         _health = GetComponent<Health>();
     }
 
@@ -42,6 +42,13 @@ public class Player : MonoBehaviour
         _health.Died -= OnDied;
     }
 
+    public void Reset()
+    {
+        _scoreCounter.Reset();
+        _playerMover.Reset();
+        _health.Heal(_health.MaxHealth - _health.CurrentHealth);
+    }
+
     private void OnDied()
     {
         Crushed?.Invoke();
@@ -50,13 +57,6 @@ public class Player : MonoBehaviour
     private void ProcessCollision(IObstacle interactable)
     {
         Crushed?.Invoke();
-    }
-
-    public void Reset()
-    {
-        _scoreCounter.Reset();
-        _playerMover.Reset();
-        _health.Heal(_health.MaxHealth - _health.CurrentHealth);
     }
 
     private void Attack()

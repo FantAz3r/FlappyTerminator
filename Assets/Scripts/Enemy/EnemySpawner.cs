@@ -14,15 +14,6 @@ public class EnemySpawner : Spawner<Enemy>
         _spawnCoroutine = StartCoroutine(Generate());
     }
 
-    private IEnumerator Generate()
-    {
-        while (enabled)
-        {
-            CreateEnemyWave();
-            yield return _delay;
-        }
-    }
-
     public void StopSpawn()
     {
         if (_spawnCoroutine != null)
@@ -34,7 +25,16 @@ public class EnemySpawner : Spawner<Enemy>
         RemoveEntities();
     }
 
-    private void CreateEnemyWave()
+    private IEnumerator Generate()
+    {
+        while (enabled)
+        {
+            Spawn();
+            yield return _delay;
+        }
+    }
+
+    private void Spawn()
     {
         int skipIndex = Random.Range(0, _enemyInWawe);
 
