@@ -1,0 +1,4 @@
+repository "FlappyTerminator@FantAz333r@cloud"
+  path "/"
+    br "/main"
+    co "/main"

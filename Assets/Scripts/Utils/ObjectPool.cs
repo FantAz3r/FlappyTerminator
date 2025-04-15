@@ -7,15 +7,15 @@ public class ObjectPool<T> where T : MonoBehaviour
     private T _prefab;
     private List<T> _objects;
     private Stack<T> _availableObjects;
-    private Stack<T> _objectsInUse;
-
-    public event Action<T> Released;
+    private Quaternion _startRotation = Quaternion.Euler(0, 0, 90);
     public ObjectPool(T prefab)
     {
         _prefab = prefab;
         _objects = new List<T>();
         _availableObjects = new Stack<T>();
     }
+
+    public event Action<T> Released;
 
     public T Get()
     {
@@ -27,15 +27,14 @@ public class ObjectPool<T> where T : MonoBehaviour
         }
         else
         {
-            T @object = Create();
-            return @object;
+            return Create();
         }
     }
 
     public void Release(T obj)
     {
         obj.transform.position = Vector3.zero;
-        obj.transform.rotation = Quaternion.Euler(0, 0, 90);
+        obj.transform.rotation = _startRotation;
 
         if (obj.TryGetComponent(out Rigidbody rigidbody))
         {
@@ -44,7 +43,7 @@ public class ObjectPool<T> where T : MonoBehaviour
         }
 
         obj.gameObject.SetActive(false);
-        Released.Invoke(obj);
+        Released?.Invoke(obj);
         _availableObjects.Push(obj);
     }
 

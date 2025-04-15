@@ -9,11 +9,6 @@ public class GameRestarter : MonoBehaviour
     [SerializeField] private BulletSpawner _bulletSpawner;
     [SerializeField] private DummyUI _restartPanel;
 
-    private void Awake()
-    {
-        GameOver();
-    }
-
     private void OnEnable()
     {
         _player.Crushed += GameOver;

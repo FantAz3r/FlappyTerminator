@@ -18,6 +18,6 @@ public class PlayerAttacker : MonoBehaviour
 
         Bullet bullet = _bulletSpawner.GetBullet(transform.position);
         bullet.LaunchingAnEntity(direction.normalized);
-        bullet.Initialize(this.gameObject);
+        bullet.Initialize(gameObject);
     }
 }

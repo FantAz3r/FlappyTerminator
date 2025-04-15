@@ -809,10 +809,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 87fa8446-d8c1-4322-a2c0-3acf560a1551
+  cloudProjectId: 3b9966bc-a08f-4d16-9482-2b151b86cde0
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Flappy Terminator 2025-03-12_14-20-12
+  projectName: FlappyTerminator
   organizationId: fantaz333r
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
