@@ -8,6 +8,7 @@ public class GameRestarter : MonoBehaviour
     [SerializeField] private EnemySpawner _enemySpawner;
     [SerializeField] private BulletSpawner _bulletSpawner;
     [SerializeField] private DummyUI _restartPanel;
+    [SerializeField] private KillCounter _killCounter;
 
     private void OnEnable()
     {
@@ -31,6 +32,7 @@ public class GameRestarter : MonoBehaviour
 
     private void GameOver()
     {
+        _killCounter.Reset();
         Time.timeScale = 0f;
         _enemySpawner.StopSpawn();
         _bulletSpawner.RemoveBullets();

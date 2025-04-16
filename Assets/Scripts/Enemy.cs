@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class Enemy : BaseEntity, IObstacle
     private Coroutine _shootCoroutine; 
     private Health _health;
 
+    public event Action<Enemy> Killed;
+
     protected override void Awake()
     {
         base.Awake();
@@ -22,6 +25,7 @@ public class Enemy : BaseEntity, IObstacle
 
     private void OnEnable()
     {
+        Killed = null;
         _health.Died += OnDied;
     }
 
@@ -63,12 +67,13 @@ public class Enemy : BaseEntity, IObstacle
     {
         Vector2 bulletSpawnPosition = transform.position;
         Bullet bullet = _bulletSpawner.GetBullet(bulletSpawnPosition);
-        bullet.Initialize(this.gameObject);
+        bullet.Initialize(gameObject);
         bullet.LaunchingAnEntity(Vector2.left);
     }
 
     private void OnDied()
     {
+        Killed?.Invoke(this);
         Despawn();
     }
 }

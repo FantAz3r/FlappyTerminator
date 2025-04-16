@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class EnemySpawner : Spawner<Enemy>
     [SerializeField] private BulletSpawner _bulletSpawner;
 
     private Coroutine _spawnCoroutine;
+
+    public event Action Died;
 
     public void StartSpawn()
     {
@@ -36,7 +39,7 @@ public class EnemySpawner : Spawner<Enemy>
 
     private void Spawn()
     {
-        int skipIndex = Random.Range(0, _enemyInWawe);
+        int skipIndex = UnityEngine.Random.Range(0, _enemyInWawe);
 
         for (int i = 0; i < _enemyInWawe; i++)
         {
@@ -49,7 +52,14 @@ public class EnemySpawner : Spawner<Enemy>
                 Enemy enemy = SpawnEntity(spawnPoint);
                 enemy.LaunchingAnEntity(Vector2.left);
                 enemy.Construct(_bulletSpawner);
+                enemy.Killed += OnEnemyKilled;
             }
         }
+    }
+
+    private void OnEnemyKilled(Enemy enemy)
+    {
+        Died?.Invoke();
+        enemy.Killed -= OnEnemyKilled;
     }
 }
